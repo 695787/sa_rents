@@ -24,14 +24,14 @@
 - All data is stored in './clean_data' directory in CSV format (`clean_data/sa_rents_data.csv`) and in a DuckDB database file `clean_data/sa_rents_data.duckdb`.
 - DuckDB CLI can be used to query the data in the file `clean_data/sa_rents_data.duckdb`
 
-e.g. 
+    e.g. 
 
-```bash
+    ```bash
 
-$ duckdb clean_data/sa_rents_data.duckdb
+    $ duckdb clean_data/sa_rents_data.duckdb
 
-D show tables;
-D select * from sa_rents_data limit 5;
-D .exit
+    D show tables;
+    D select * from sa_rents_data limit 5;
+    D .exit
 
-```
+    ```
