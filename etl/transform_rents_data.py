@@ -140,6 +140,7 @@ for file_name in os.listdir(sa_rents_data_folder):
                 except ValueError:
                     df = pd.read_excel(file_path, sheet_name="Final Suburbs")
 
+            # This is hacky, but the data format is not consistent!!
             # Check for exact match for "Metro" in the first column
             metro_row = df[df.iloc[:, 0] == "Metro"]
             if not metro_row.empty:
