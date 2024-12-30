@@ -4,6 +4,9 @@
 
 - Source - [South Australia Government Data Directory - Private Rent datasets](https://data.sa.gov.au/data/dataset/private-rent-report)
 
+### Prerequisites and requirements
+- `pip install -r requirements.txt`
+
 ### Extract data 
 
 - `python ./etl/download_rents_data.py`

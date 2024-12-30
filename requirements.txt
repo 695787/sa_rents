@@ -1,0 +1,7 @@
+pandas
+ipywidgets
+duckdb
+plotly
+requests
+openpyxl
+xlrd
