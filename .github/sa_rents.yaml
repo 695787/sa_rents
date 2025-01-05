@@ -1,0 +1,58 @@
+
+name: Download sa rents data 
+
+on:
+  workflow_dispatch:
+
+jobs:
+  download-sa-rents-data:
+    runs-on: ubuntu-latest
+    env:
+      # TODO - check when next update happends, this is assumed to be static
+      REPORT_ID: 8eb97a72-9919-448b-8de6-fc1530b3f7ec
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install -r requirements.txt
+
+      - name: Get max date from DuckDB
+        run: |
+          import duckdb
+          con = duckdb.connect('clean_data/sa_rents_data.duckdb')
+          result = con.execute("select max(CAST(year || '-' || month || '-01' AS DATE)) as mdate_ from sa_rents_data").fetchone()
+          max_date = result[0]
+          print(f"Max date: {max_date}")
+        shell: python
+
+      - name: Set max_date output
+        id: set-max-date
+        run: echo "::set-output name=max_date::$max_date"
+
+      - name: print max_date
+        run: echo "The max date is ${{ needs.get-max-date.outputs.max_date }}"
+
+      - name: Download JSON file
+        run: |
+          curl -o sa_rents.json https://data.sa.gov.au/data/api/3/action/package_show?id=$REPORT_ID
+
+      - name: Upload JSON file as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: sa_rents_json
+          path: sa_rents.json
+
+
+      - name: Download latest data
+        run: |
+          python ./etl/download_rents_data.py
+
+      - name: Upload data as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: sa_rents_data
+
